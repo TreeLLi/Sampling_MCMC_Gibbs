@@ -2,6 +2,7 @@ import numpy as np
 #import matplotlib.pyplot as plt
 import pandas as pd
 
+from numpy import sum
 
 # ##############################################################################
 # Returns a single sample from the conditional distribution p(beta_0 | beta_1, beta_2, tau, mu_0, tau_0, X, y)
@@ -10,6 +11,8 @@ def sample_beta_0(y, x, beta_1, beta_2, tau, mu_0, tau_0):
     N = len(y)
     assert len(x) == N
     # TODO: Task 1 - Implement a sample from the conditional distribution for beta_0
+    precision = tau + tau_0
+    mean = (sum(y - beta_1*x - beta_2*(x**2))*tau + tau_0*mu_0) / precision
     return np.random.normal(mean, 1.0 / np.sqrt(precision))
 
 # ##############################################################################
