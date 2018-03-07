@@ -73,7 +73,6 @@ def gibbs(y, x, iters, init, hypers):
         # TODO: Task 5 - Implement a Gibbs sampler
         trace[it, :] = np.array((beta_0, beta_1, beta_2, tau))
         cur = trace[it]
-        print (cur)
         if it > 0:
             pre = trace[it-1]
             cur[0] = sample_beta_0(y, x, pre[1], pre[2], pre[3], mu_0, tau_0)
