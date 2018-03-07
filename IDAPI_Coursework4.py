@@ -22,6 +22,8 @@ def sample_beta_1(y, x, beta_0, beta_2, tau, mu_1, tau_1):
     N = len(y)
     assert len(x) == N
     # TODO: Task 2 - Implement a sample from the conditional distribution for beta_1
+    precision = tau_1 + tau*sum(x**2)
+    mean = (tau_1*mu_1 + tau*sum(x*(y-beta_0-beta_2*x**2))) / precision
     return np.random.normal(mean, 1 / np.sqrt(precision))
 
 # ##############################################################################
