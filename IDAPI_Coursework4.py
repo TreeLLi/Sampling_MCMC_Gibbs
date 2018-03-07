@@ -60,10 +60,26 @@ def gibbs(y, x, iters, init, hypers):
 
     trace = np.zeros((iters, 4))  ## trace to store values of beta_0, beta_1, beta_2, tau
 
+    mu_0 = hypers["mu_0"]
+    tau_0 = hypers["tau_0"]
+    mu_1 = hypers["mu_1"]
+    tau_1 = hypers["tau_1"]
+    mu_2 = hypers["mu_2"]
+    tau_2 = hypers["tau_2"]
+    alpha = hypers["alpha"]
+    beta = hypers["beta"]
+    
     for it in range(iters):
         # TODO: Task 5 - Implement a Gibbs sampler
         trace[it, :] = np.array((beta_0, beta_1, beta_2, tau))
-
+        cur = trace[it]
+        if it > 0:
+            pre = trace[it-1]
+            cur[0] = sample_beta_0(y, x, pre[1], pre[2], pre[3], mu_0, tau_0)
+            cur[1] = sample_beta_1(y, x, cur[0], pre[2], pre[3], mu_1, tau_1)
+            cur[2] = sample_beta_2(y, x, cur[0], cur[1], pre[3], mu_2, tau_2)
+            cur[3] = sample_tau(y, x, cur[0], cur[1], cur[2], alpha, beta)
+        
     trace = pd.DataFrame(trace)
     trace.columns = ['beta_0', 'beta_1', 'beta_2', 'tau']
 
