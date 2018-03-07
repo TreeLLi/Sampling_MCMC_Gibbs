@@ -44,7 +44,7 @@ def sample_tau(y, x, beta_0, beta_1, beta_2, alpha, beta):
     N = len(y)
     # TODO: Task 4 - Implement a sample from the conditional distribution for tau
     alpha_new = N/2.0 + alpha
-    beta_new = sum((y-beta_0-beta_1*x-beta_1*x**2)**2)/2 + beta
+    beta_new = sum((y-beta_0-beta_1*x-beta_2*x**2)**2)/2 + beta
     return np.random.gamma(alpha_new, 1 / beta_new)
 
 # ##############################################################################
@@ -73,6 +73,7 @@ def gibbs(y, x, iters, init, hypers):
         # TODO: Task 5 - Implement a Gibbs sampler
         trace[it, :] = np.array((beta_0, beta_1, beta_2, tau))
         cur = trace[it]
+        print (cur)
         if it > 0:
             pre = trace[it-1]
             cur[0] = sample_beta_0(y, x, pre[1], pre[2], pre[3], mu_0, tau_0)
@@ -122,7 +123,7 @@ if __name__ == '__main__':
 
     trace = gibbs(y, x, iters, init, hypers)
 
-    trace_burnt = trace[len(trace) / 2:]
+    trace_burnt = trace[len(trace) // 2:]
 
 
     factor = 3.
